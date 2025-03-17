@@ -1,0 +1,28 @@
+CREATE TABLE departments (
+    name VARCHAR(64) NOT NULL,
+    `short form` VARCHAR(3) NOT NULL PRIMARY KEY,
+    building VARCHAR(64),
+    budget DECIMAL(12, 2)
+);
+
+-- Insert one row
+INSERT INTO departments (name, `short form`, building, budget) 
+VALUES ('Computer Science', 'CS', 'IICT Building', 15000000);
+
+-- Insert one row with columns not in order
+INSERT INTO departments (`short form`, name, building, budget) 
+VALUES ('BNG', 'Bangla', 'Academic Building - D', 500000);
+
+-- Insert one incomplete row (without budget)
+INSERT INTO departments (name, `short form`, building) 
+VALUES ('Statistics', 'STA', 'Academic Building - C');
+
+-- Insert multiple rows at once
+INSERT INTO departments (name, `short form`, building, budget) 
+VALUES ('Electrical Engineering', 'EE', 'IICT Building', 7500000), 
+       ('Civil Engineering', 'CE', 'Academic Building - A', NULL), 
+       ('Mathematics', 'MAT', 'Academic Building - C', 3000000);
+
+-- Insert a whole row
+INSERT INTO departments 
+VALUES ('Petroleum Engineering', 'PE', 'Academic Building - B', 500000);

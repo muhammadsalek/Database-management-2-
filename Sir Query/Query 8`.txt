@@ -1,0 +1,29 @@
+ELECT * FROM `classroom`
+SELECT * FROM `classroom`
+SELECT * FROM `department`
+SELECT * FROM `instructor`
+SELECT * FROM `section`
+SELECT * FROM `student`
+SELECT * FROM `takes`
+# Print the names of all courses where one student got an A: SELECT course_id FROM takes WHERE grade = 'A';
+# Print the names of all courses where one student got an A: SELECT title FROM course WHERE course_id IN ('CS-101', 'CS-102');
+# Print the names of all courses where one student got an A: SELECT title FROM course WHERE course_id IN ( SELECT course_id FROM takes WHERE grade = 'A');
+# Print the names of all courses where one student got an A: SELECT title FROM course WHERE course_id IN ( SELECT course_id FROM takes WHERE grade = 'A');
+# Print the names of all courses where one student got an A: SELECT course_id FROM takes WHERE grade = 'A';
+# Print the names of all courses where one student got an A: SELECT title FROM course WHERE course_id IN ( SELECT course_id FROM takes WHERE grade = 'A');
+# Print the names of all courses where one student got an A: SELECT title FROM course WHERE course_id IN ( 'CS-101', 'CS-190', 'CS-315', 'CS-347', 'CS-101', 'CS-319', 'BIO-101' );
+# Print the names of all instructors that earn more than instructors of the finance department. SELECT max(salary) FROM instructor WHERE dept_name = 'Finance';
+# Print the names of all instructors that earn more than instructors of the finance department. SELECT name FROM instructor WHERE salary > ( SELECT max(salary) FROM instructor WHERE dept_name = 'Finance' );
+# Print the names of all instructors that earn more than instructors of the finance department. SELECT name, salary FROM instructor WHERE salary > ( SELECT max(salary) FROM instructor WHERE dept_name = 'Finance' );
+# Find course_id of courses taking place in Packard buidling in both Fall 2017 and Spring 2018 SELECT course_id FROm section WHERE semester = 'Fall' AND year = '2017';
+# Find course_id of courses taking place in Packard buidling in both Fall 2017 and Spring 2018 SELECT course_id FROM section WHERE semester = 'Spring' AND year = '2018';
+# Find course_id of courses taking place in Packard buidling in both Fall 2017 and Spring 2018 SELECT course_id FROM section WHERE semester = 'Fall' AND year = '2017' INTERSECT ( SELECT course_id FROM section WHERE semester = 'Spring' AND year = '2018' );
+# Find course_id of courses taking place in Packard buidling in both Fall 2017 and Spring 2018 SELECT course_id, building FROM section WHERE semester = 'Fall' AND year = '2017' INTERSECT ( SELECT course_id, building FROM section WHERE semester = 'Spring' AND year = '2018' );
+# Find the names of those departments whose instructors have an average salary greater than 42000 SELECT dept_name FROM instructor GROUP BY dept_name HAVING avg(salary) > 42000;
+# Find the names of those departments whose instructors have an average salary greater than 42000 SELECT dept_name, avg(salary) AS avg_salary FROM instructor GROUP BY dept_name;
+# Find the names of those departments whose instructors have an average salary greater than 42000 SELECT dept_name FROM ( SELECT dept_name, avg(salary) AS avg_salary FROM instructor GROUP BY dept_name ) AS teacher_info WHERE avg_salary > 42000;
+# Find course_id of courses taking place in Packard buidling in both Fall 2017 and Spring 2018 SELECT course_id FROM ( SELECT course_id, building FROM section WHERE semester = 'Fall' AND year = '2017' INTERSECT ( SELECT course_id, building FROM section WHERE semester = 'Spring' AND year = '2018' ) ) AS course_in_spring_and_fall WHERE building = 'Packard';
+# Find course_id of courses taking place in Packard buidling in both Fall 2017 and Spring 2018 # WITH subclause WITH course_in_spring_and_fall AS ( SELECT course_id, building FROM section WHERE semester = 'Fall' AND year = '2017' INTERSECT ( SELECT course_id, building FROM section WHERE semester = 'Spring' AND year = '2018' ) ) SELECT course_id FROM course_in_spring_and_fall WHERE building = 'Packard';
+# Find name of students who have got at least one A SELECT name FROM student AS s WHERE EXISTS ( SELECT * FROM takes AS t WHERE t.ID = s.ID AND grade = 'A' );
+# Find name of students who have got no F SELECT name FROM student WHERE NOT EXISTS ( SELECT * FROM takes WHERE takes.ID = student.ID AND grade = 'F' );
+

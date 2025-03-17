@@ -1,0 +1,12 @@
+SELECT * FROM instructor, department;
+SELECT * FROM instructor, department;
+SELECT name, salary, budget FROM instructor, department;
+SELECT name, salary, instructor.dept_name, budget FROM instructor, department;
+SELECT name, salary, instructor.dept_name, department.dept_name, budget FROM instructor, department;
+SELECT name, salary, i.dept_name, department.dept_name, budget FROM instructor AS i, department;
+SELECT name, salary, i.dept_name, d.dept_name, budget FROM instructor AS i, department AS d;
+SELECT name, salary, i.dept_name, d.dept_name, budget FROM instructor AS i, department AS d WHERE i.dept_name = d.dept_name;
+SELECT name, salary, i.dept_name, d.dept_name, building FROM instructor AS i, department AS d WHERE i.dept_name = d.dept_name;
+SELECT name, i.dept_name, building FROM instructor AS i, department AS d WHERE i.dept_name = d.dept_name;
+SELECT name, i.dept_name, building FROM instructor AS i, department AS d WHERE i.dept_name = d.dept_name;
+

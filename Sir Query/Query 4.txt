@@ -1,0 +1,52 @@
+SELECT dept_name, building FROM department;
+
+SELECT name, dept_name FROM student;
+
+SELECT course_id, grade FROM takes;
+
+SELECT name, dept_name FROM student WHERE tot_cred >= 100;
+
+SELECT name FROM instructor WHERE dept_name = "Comp. Sci.";
+
+SELECT name FROM instructor WHERE dept_name = "Comp. Sci." AND salary > 50000;
+
+#####
+Updating Rows/Records in MySQL
+Featuring Arithmetic, Relational and (Some) Logical operations
+CREATE TABLE teachers ( id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, name VARCHAR(32) NOT NULL, department VARCHAR(3), rank ENUM('Lecturer', 'Assistant Professor', 'Associate Professor', 'Professor') DEFAULT NULL, salary NUMERIC(10, 2) );
+
+
+INSERT INTO teachers (name, department, rank, salary) VALUES ('Ishtiaque', 'CSE', 'Lecturer', 35000);
+
+
+INSERT INTO teachers (name, department, rank, salary) VALUES ('Abdullah', 'STA', 'Assistant Professor', 50000), ('Alamgir', 'MAT', 'Profesor', 72000);
+
+
+UPDATE teachers SET department = "CSE";
+
+
+UPDATE teachers SET salary = salary + 20000;
+
+
+UPDATE teachers SET salary = salary - 20000;
+
+UPDATE teachers SET salary = salary / 2;
+
+UPDATE teachers SET salary = salary * 2;
+
+UPDATE teachers SET salary = salary * 2 + 500;
+
+UPDATE teachers SET salary = salary + 10000 WHERE salary < 50000;
+
+UPDATE teachers SET salary = salary + 10000 WHERE name = 'Alamgir';
+
+UPDATE teachers SET salary = salary + 10000 WHERE salary <= 50000;
+
+INSERT INTO teachers (name, department, rank, salary) VALUES ('Mehedi', 'CSE', 'Lecturer', 30000), ('Mahbubur', 'ECO', 'Professor', 75000), ('Fahim', 'STA', 'Associate Professor', 60000);
+
+UPDATE teachers SET salary = salary + 10000 WHERE rank = 'Professor' AND salary < 75000;
+
+UPDATE teachers SET salary = salary + 10000 WHERE rank = 'Professor' OR rank < 'Associate Professor';
+
+
+#########

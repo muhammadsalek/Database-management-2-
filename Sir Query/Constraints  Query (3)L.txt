@@ -1,0 +1,94 @@
+Constraints in SQL
+
+Creating a table with PRIMARY KEY and the NOT NULL constraints
+
+CREATE TABLE departments (
+name VARCHAR(64) NOT NULL, 
+short_form VARCHAR(3) NOT NULL, 
+building VARCHAR(64) DEFAULT NULL, 
+budget DECIMAL(12, 2) DEFAULT NULL, 
+CONSTRAINT pk_departments PRIMARY KEY (short_form) 
+);
+
+Try adding some departments with INSERT INTO queries. You will see that departments with the same short_form cannot be added. 
+
+Also, you will notice that you cannot add rows with no name and short_form (since they are NOT NULL). But you will be able to add rows with no building and budget - in that case, the values of the missing building and/or budget will be set to the special value NULL (because of DEFAULT NULL).
+
+The DEFAULT NULL sets default values of newly inserted rows with no values for the particular attributes/fields to NULL. If you do not add this, the value would be set to ‘’ (empty string) or 0 (for numerical data types). *
+
+Creating a table with FOREIGN KEY constraint
+
+CREATE TABLE students ( 
+registration_number NUMERIC(10) NOT NULL, 
+name VARCHAR(64) NOT NULL, 
+department VARCHAR(3) DEFAULT NULL, 
+cgpa DECIMAL(3, 2) DEFAULT NULL, 
+CONSTRAINT pk_students PRIMARY KEY (registration_number),
+CONSTRAINT fk_students_department FOREIGN KEY (department) REFERENCES departments (short_form) 
+);
+
+Try adding some students into the students table with INSERT INTO queries. You will see that if you want to set the department of the students, you have to set it to the short_form of one of the departments you have already added in the departments table (effectively making sure that the departments students are registering in are real). 
+But you can add students with abnormally wrong GPA, like GPA 5.5.
+
+Adding a CHECK constraint to the students table (to check if CGPA is between 1 and 4)
+
+ALTER TABLE students 
+ADD CONSTRAINT chk_cgpa CHECK (cgpa BETWEEN 1 AND 4);
+
+The above query may not work if you had already added students with GPA in the wrong range. If that is the case, change those people’s GPA to a valid range (for now, change manually or delete those students - we have not shown the technique to modify rows using SQL yet). 
+
+After this query has successfully run, you will notice that you can no longer add students with abnormally high CGPA. 
+
+cgpa BETWEEN 1 AND 4
+
+The above part is called a predicate - it takes a value of TRUE (✔️), FALSE (❌) or UNKNOWN (❔) based on the value of cgpa of the rows. CHECK only allows you to add rows if they do not make the predicate FALSE.
+
+If you want to remove a constraint, replace ADD CONSTRAINT with DROP CONSTRAINT
+
+ALTER TABLE students 
+DROP CONSTRAINT chk_cgpa;
+
+Now you can again add students with abnormally high GPAs
+
+Creating a TABLE with UNIQUE (aka candidate key) constraints
+
+ CREATE TABLE courses ( 
+id INT AUTO_INCREMENT NOT NULL, 
+course_id VARCHAR(4) NOT NULL, 
+department VARCHAR(3) NOT NULL, 
+title VARCHAR(64) NOT NULL, 
+credits DECIMAL(4,2), 
+CONSTRAINT pk_course_id PRIMARY KEY (id), 
+CONSTRAINT fk_courses_departments FOREIGN KEY (department) REFERENCES departments(short_form), 
+CONSTRAINT uq_courses_course_id_department UNIQUE (course_id, department) 
+);
+
+Now there are the following constraints in the courses table
+id must be different (since PRIMARY KEY)
+department must exist as one of the short_form in the departments table (since FOREIGN KEY)
+course_id and department combined must be unique (since UNIQUE)
+You can have two courses with the same course_id (like CSE 333 and STA 333)
+You can have two courses in the same department (like CSE 333 and CSE 334)
+But you cannot have two courses with the same course_id and department)
+id, course_id, department, title must not be empty.
+
+However, while adding a new column using the INSERT INTO query, you can add a row without an id field. In that case, MySQL will automatically add an id number for the new row (because of the AUTO_INCREMENT column modifier - this sets id numbers automatically to the next number after the highest number in that column). Try it.
+
+You do not need to always add the constraints separately in a CONSTRAINT XXX column specification, you can add it immediately while you are describing each of the columns.
+
+Creating a table with constraints included while describing the columns:
+
+CREATE TABLE staff ( 
+id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, 
+name VARCHAR(64) NOT NULL, 
+department VARCHAR(3) REFERENCES departments(short_form), 
+salary DECIMAL(10,2) CHECK (salary > 0) 
+);
+
+The above query contains PRIMARY KEY, FOREIGN KEY, NOT NULL and CHECK constraints, can you find them? 
+Try adding some staff members and check if the constraints are working as intended. 
+In this style of adding constraints, since they have no names, you cannot delete them if you wanted to. 
+
+
+
+

@@ -1,0 +1,49 @@
+Create a database:
+CREATE DATABASE university;
+
+
+Use a database (Important if you did not select the database before pressing the SQL tab in PhpMyAdmin):
+USE university;
+
+
+Create a table:
+CREATE TABLE department ( 
+name VARCHAR(64), 
+`short form` VARCHAR(3), 
+building VARCHAR(64), 
+budget DECIMAL(12, 2)
+);
+
+
+  Change structure of table:
+  
+  Delete (Drop) a column:
+ALTER TABLE department DROP budget;
+
+
+Add a column:
+ALTER TABLE department ADD COLUMN budget DECIMAL(12, 2);
+
+
+Add a column at any position among the existing columns:
+ALTER TABLE department ADD COLUMN founding_date DATE AFTER `short form`;
+
+
+  Change data type of column:
+ALTER TABLE department MODIFY `short form` VARCHAR(4);
+
+
+  Rename a column column (Note that this is MySQL specific):
+ALTER TABLE department CHANGE `short form` short_form VARCHAR(4);
+
+
+Rename a table:
+RENAME TABLE department TO departments;
+
+
+Delete (drop) a table:
+DROP TABLE departments;
+
+
+Delete (drop) a database:
+DROP DATABASE university;
